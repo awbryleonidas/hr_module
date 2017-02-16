@@ -1,0 +1,11 @@
+#RewriteEngine on
+#
+#RewriteCond $1 !^(index\.php|system|assets|admin|images|css)
+#RewriteRule ^(.*)$ index.php/$1 [L]
+#
+#RedirectMatch 404 /\\.git(/|$)
+
+Options All -Indexes
+RewriteEngine on
+RewriteCond $1 !^(index\.php|system|assets|images|css|robots\.txt)
+RewriteRule ^(.*)$ /hr/index.php/$1 [L]

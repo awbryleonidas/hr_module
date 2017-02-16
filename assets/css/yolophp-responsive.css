@@ -1,0 +1,33 @@
+/* Smaller devices (tablets, 768px and smaller) */
+@media (max-width: 768px) {
+	.box-actions {
+		text-align: center;
+	}
+
+	.box-actions .btn {
+		display: block;
+		width: 100%;
+	}
+
+	#timeline { height: 400px !important; overflow: auto;}
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	/*#timeline { max-height: 660px; overflow: auto; }*/
+	#timeline { overflow: auto; }
+	/*.col-checklist { padding-left: 0 !important; }*/
+	.col-right { padding-left: 0 !important; }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	/*#timeline { max-height: 365px; overflow: auto; }*/
+	#timeline { overflow: auto; }
+	.col-right { padding-left: 0 !important; }
+}

@@ -1,0 +1,17 @@
+<?php 
+header("Content-type: text/css; charset: UTF-8");
+
+$file = $_GET['f'];
+
+// make sure it's a css file
+if (substr($file, -4) != '.css') exit;
+
+// remove file hacking characters
+$file = str_replace('../', '', $file);
+
+$path = $_SERVER['DOCUMENT_ROOT'] . str_replace('assets/css/extra/extra.css', '', $_SERVER['PHP_SELF']) . 'application/modules/';
+
+if (file_exists($path.$file))
+{
+	include($path.$file);
+}

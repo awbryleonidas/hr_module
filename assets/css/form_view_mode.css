@@ -1,0 +1,3 @@
+.form-control { border: 0; border-bottom: 1px solid #DDD; pointer-events: none; }
+.control-label { padding-left: 20px; }
+.hide-on-view { display: none; visibility: hidden;}
