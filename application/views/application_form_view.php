@@ -9,7 +9,7 @@
 			'method' => 'post',
 		);
 		$type =  isset($record)? '/edit/'. $record['record_id']: '';
-		echo form_open('application/submit'. $type, $data);
+		echo form_open('applications/submit'. $type, $data);
 		echo isset($error)? $error: '';
 	?>
 

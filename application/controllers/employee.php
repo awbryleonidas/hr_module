@@ -31,7 +31,6 @@ class Employee extends CI_Controller {
 	}
 	public function time()
 	{
-		$data['title'] = 'Employee - Time Entries';
 		$id = $this->input->post('employee_id');
 		$data = array(
 			'time_entry_id' => $id
@@ -42,6 +41,7 @@ class Employee extends CI_Controller {
 		$this->table->set_heading('id','Date','Time In','Time Out');
 		$data['username'] = $this->session->userdata('username');
 		$data['date_logged'] = date("Y-m-d H:i:s");
+		$data['title'] = 'Employee - Time Entries';
 		$data['report_type'] = 'time_entry';
 		$data['view'] = 'table_view';
 		$this->load->view('template_view', $data);
@@ -114,7 +114,7 @@ class Employee extends CI_Controller {
 		$data['title'] = 'Employee - Application List';
 		$tmpl = array ( 'table_open'  => '<table id="datatables" border="1" cellpadding="2" cellspacing="1" class="table table-striped table-bordered table-hover dt-responsive">' );
 		$this->table->set_template($tmpl);
-		$this->table->set_heading('id','Date','Status', 'Type', 'Action');
+		$this->table->set_heading('id','Date','Status', 'Type');
 		$data['username'] = $this->session->userdata('username');
 		$data['date_logged'] = date("Y-m-d H:i:s");
 		$data['report_type'] = 'application';
@@ -127,8 +127,7 @@ class Employee extends CI_Controller {
 		$employee_id = $this->session->userdata('user_employee_id');
 		$this->datatables->select("application_id, application_date, application_status, application_type")
 			->from('applications')
-			->where('application_employee_id =' . $employee_id)
-			->add_column('Actions', get_buttons('$3'),'id');
+			->where('application_employee_id = "' . $employee_id . '"');
 
 		echo $this->datatables->generate();
 	}

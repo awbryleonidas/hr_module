@@ -29,14 +29,16 @@ class Applications extends CI_Controller {
 	{
 		//this for now, we can include validation
 		$this->applications_model->approve($id);
-		redirect('admin/application', 'refresh');
+
+
+		redirect('admin/applications', 'refresh');
 	}
 
 	public function deny($id)
 	{
 		//this for now, we can include validation
 		$this->applications_model->deny($id);
-		redirect('admin/application', 'refresh');
+		redirect('admin/applications', 'refresh');
 	}
 
 	public function add()
@@ -57,6 +59,10 @@ class Applications extends CI_Controller {
 
 		$this->form_validation->set_error_delimiters('', '');
 
+		if ($this->form_validation->run() == TRUE)
+		{
+			//for data validations
+		}
 		$record = array(
 			'application_employee_id'	=> $employee_id,
 			'application_type'	=> $this->input->post('application_type'),
@@ -64,17 +70,14 @@ class Applications extends CI_Controller {
 			'application_reason'	=> $this->input->post('application_reason'),
 		);
 
-		if ($this->form_validation->run() == TRUE)
+		$result = ($type=='add')? $this->applications_model->insert_application($record): $this->appliations_model->update_application($id, $record);
+		if($result)//save record
 		{
-			$result = ($type=='add')? $this->appliations_model->insert_application($record): $this->appliations_model->update_application($id, $record);
-			if($result)//save record
-			{
-				redirect('employee/application');
-			}
-			else
-			{
-				$data['error'] = 'Something went wrong. Please try again.';
-			}
+			redirect('employee/applications');
+		}
+		else
+		{
+			$data['error'] = 'Something went wrong. Please try again.';
 		}
 		$data['title'] = 'Add Application';
 		$data['username'] = $this->session->userdata('username');

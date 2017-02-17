@@ -1,5 +1,5 @@
 
-<?php $employee = $this->session->userdata('user_employee_id'); ?>
+<?php $user_type = $this->session->userdata('user_type'); ?>
 	<style type="text/css">
 		.dataTables_filter{
 			position: absolute;
@@ -37,7 +37,7 @@
 				"bProcessing"       : true,
 				"bServerSide"       : true,
 				"iDisplayLength"    : 15,
-				"sAjaxSource"       : '<?php echo (isset($employee))? base_url('employee'): base_url('admin'); ?>/<?php echo $report_type?>_datatable',
+				"sAjaxSource"       : '<?php echo ($user_type == 'employee')? base_url('employee'): base_url('admin'); ?>/<?php echo $report_type?>_datatable',
 				"bLengthChange"     : false,
 				"sPaginationType"   : "full_numbers",
 				"bAutoWidth"        : false,
@@ -48,7 +48,25 @@
 						"aTargets": [0],
 						"sClass": "col-md-1 text-center",
 					},
-					<?php if($report_type=='application'):?>
+					<?php if($report_type=='application' AND $user_type == 'employee'):?>
+					{
+						"aTargets": [2],
+						"mRender": function (data, type, full) {
+							if (full[2]=='approved') {
+								html = '<span class="badge bg-light-blue">Approved</span>';
+							}
+							else if (full[2]=='denied') {
+								html = '<span class="badge bg-red">Denied</span> ';
+							}
+							else {
+								html = '<span class="badge bg-yellow">Pending</span> ';
+							}
+							return html;
+						},
+						"sClass": "col-md-1 text-center",
+					},
+					<?php endif;?>
+					<?php if($report_type=='application' AND $user_type == 'admin'):?>
 					{
 						"aTargets": [3],
 						"mRender": function (data, type, full) {
@@ -77,7 +95,7 @@
 						"sClass": "col-md-1",
 					},
 					<?php endif;?>
-					<?php if($report_type=='application'):?>
+					<?php if($report_type=='application' AND $user_type == 'admin'):?>
 					{
 						"aTargets": [5],
 						"bSortable": false,
@@ -85,18 +103,18 @@
 							html = '';
 							if(full[3]=='pending' || full[3]=='' )
 							{
-								html += ' <a href="<?php echo base_url(); ?>applications/approve/'+full[0]+'" data-toggle="modal" data-target="#modal" tooltip-toggle="tooltip" title="Approve" class="btn btn-xs btn-info">Approve</a>';
-								html += ' <a href="<?php echo base_url(); ?>applications/deny/'+full[0]+'" data-toggle="modal" data-target="#modal" tooltip-toggle="tooltip" title="Reject" class="btn btn-xs btn-danger">Deny</a>';
+								html += ' <a href="<?php echo base_url(); ?>applications/approve/'+full[0]+'" data-toggle="modal" href="#form-content" tooltip-toggle="tooltip" data-placement="top" title="Approve" class="btn btn-xs btn-info">Approve</a>';
+								html += ' <a href="<?php echo base_url(); ?>applications/deny/'+full[0]+'" data-toggle="modal" href="#form-content" tooltip-toggle="tooltip" data-placement="top" title="Deny" class="btn btn-xs btn-danger">Deny</a>';
 							}
 							else
 							{
 								if(full[3]=='approved')
 								{
-									html += ' <a href="<?php echo base_url(); ?>applications/deny/'+full[0]+'" data-toggle="modal" data-target="#modal" tooltip-toggle="tooltip" title="Reject" class="btn btn-xs btn-danger">Deny</a>';
+									html += ' <a href="<?php echo base_url(); ?>applications/deny/'+full[0]+'" data-toggle="modal" href="#form-content" tooltip-toggle="tooltip" data-placement="top" title="Deny" class="btn btn-xs btn-danger">Deny</a>';
 								}
 								else
 								{
-									html += ' <a href="<?php echo base_url(); ?>applications/approve/'+full[0]+'" data-toggle="modal" data-target="#modal" tooltip-toggle="tooltip" title="Approve" class="btn btn-xs btn-info">Approve</a>';
+									html += ' <a href="<?php echo base_url(); ?>applications/approve/'+full[0]+'" data-toggle="modal" href="#form-content" tooltip-toggle="tooltip" data-placement="top" title="Approve" class="btn btn-xs btn-info">Approve</a>';
 								}
 							}
 							return html;
@@ -129,10 +147,16 @@
 
 	</script>
 
-	<a class="btn btn-sm btn-default" href="<?php echo site_url('site'); ?>"><span class="fa fa-angle-left"></span> Back</a>
+
+	<?php if($user_type == 'admin' AND $report_type =='time_entry'):?>
+		<a class="btn btn-sm btn-default" href="<?php echo site_url('admin/time'); ?>"><span class="fa fa-angle-left"></span> Back</a>
+	<?php else:?>
+		<a class="btn btn-sm btn-default" href="<?php echo site_url('site'); ?>"><span class="fa fa-angle-left"></span> Back</a>
+	<?php endif;?>
+
 	<?php if ($report_type=='employee'):?><a class="btn btn-sm btn-success btn-add" href="<?php echo site_url('employee/add'); ?>"><span class="fa fa-plus"></span> Add New</a><?php endif;?>
 
-	<?php if($employee AND $report_type =='application'):?>
+	<?php if($user_type == 'employee' AND $report_type =='application'):?>
 		<a class="btn btn-sm btn-success btn-add" href="<?php echo site_url('applications/add'); ?>"><span class="fa fa-plus"></span> Add New</a>
 	<?php endif;?>
 

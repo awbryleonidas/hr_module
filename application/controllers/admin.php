@@ -62,8 +62,6 @@ class Admin extends CI_Controller {
 	}
 	public function time_table()
 	{
-		$data['title'] = 'Admin - Time Entries';
-
 		$id = $this->input->post('employee_id');
 		$data = array(
 			'time_entry_id' => $id
@@ -77,6 +75,7 @@ class Admin extends CI_Controller {
 		$data['date_logged'] = date("Y-m-d H:i:s");
 		$data['report_type'] = 'time_entry';
 		$data['view'] = 'table_view';
+		$data['title'] = 'Admin - Time Entries';
 		$this->load->view('template_view', $data);
 	}
 	
